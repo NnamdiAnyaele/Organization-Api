@@ -1,0 +1,224 @@
+[
+  {
+    '$project': {
+      'name': 1, 
+      'borough': 1, 
+      'cuisine': 1, 
+      'restauranr_Id': 1
+    }
+  }, {
+    '$match': {
+      'name': new RegExp('.*Reg.*')
+    }
+  }
+]
+2.
+[
+  {
+    '$match': {
+      'borough': 'Bronx', 
+      'cuisine': new RegExp('American|Chinese', 'i')
+    }
+  }
+]
+3.
+[
+  {
+    '$project': {
+      'restaurant_id': 1, 
+      'name': 1, 
+      'cuisine': 1, 
+      'borough': 1
+    }
+  }, {
+    '$match': {
+      '$or': [
+        {
+          'borough': 'Staten Island'
+        }, {
+          'borough': 'Queens'
+        }, {
+          'borough': 'Bronx'
+        }, {
+          'borough': 'Brooklyn'
+        }
+      ]
+    }
+  }
+]
+4.
+[
+  {
+    '$project': {
+      'restaurant_id': 1, 
+      'name': 1, 
+      'cuisine': 1, 
+      'borough': 1
+    }
+  }, {
+    '$match': {
+      '$nor': [
+        {
+          'borough': 'Staten Island'
+        }, {
+          'borough': 'Queens'
+        }, {
+          'borough': 'Bronx'
+        }, {
+          'borough': 'Brooklyn'
+        }
+      ]
+    }
+  }
+]
+5.
+[
+  {
+    '$project': {
+      'restaurant_id': 1, 
+      'name': 1, 
+      'cuisine': 1, 
+      'borough': 1, 
+      'grades.score': 1
+    }
+  }, {
+    '$unwind': {
+      'path': '$grades'
+    }
+  }, {
+    '$match': {
+      'grades.score': {
+        '$lt': 10
+      }
+    }
+  }
+]
+6.
+[
+  {
+    '$project': {
+      'restaurant_id': 1, 
+      'name': 1, 
+      'cuisine': 1, 
+      'borough': 1
+    }
+  }, {
+    '$match': {
+      '$nor': [
+        {
+          'cuisine': 'American'
+        }, {
+          'cuisine': 'Chinese'
+        }
+      ]
+    }
+  }, {
+    '$match': {
+      'name': new RegExp('^Wil')
+    }
+  }
+]
+7.
+[
+  {
+    '$project': {
+      'restaurant_id': 1, 
+      'name': 1, 
+      'grades': 1
+    }
+  }, {
+    '$unwind': {
+      'path': '$grades'
+    }
+  }, {
+    '$match': {
+      'grades.grade': 'A', 
+      'grades.date': new Date('Mon, 11 Aug 2014 00:00:00 GMT')
+    }
+  }
+]
+8.
+[
+  {
+    '$project': {
+      'restaurant_id': 1, 
+      'name': 1, 
+      'grades': 1
+    }
+  }, {
+    '$unwind': {
+      'path': '$grades', 
+      'includeArrayIndex': '1'
+    }
+  }, {
+    '$match': {
+      'grades.grade': 'A', 
+      'grades.score': {
+        '$eq': 9
+      }, 
+      'grades.date': new Date('Mon, 11 Aug 2014 00:00:00 GMT')
+    }
+  }
+]
+9.
+[
+  {
+    '$project': {
+      'restaurant_id': 1, 
+      'name': 1, 
+      'address': 1, 
+      'coord': 1
+    }
+  }, {
+    '$match': {
+      'address.coord.1': {
+        '$gt': 42, 
+        '$lte': 52
+      }
+    }
+  }
+]
+10.
+[
+  {
+    '$sort': {
+      'name': 1
+    }
+  }
+]
+11.
+[
+  {
+    '$sort': {
+      'name': -1
+    }
+  }
+]
+12.
+[
+  {
+    '$sort': {
+      'cuisine': 1, 
+      'borough': -1
+    }
+  }
+]
+13.
+[
+  {
+    '$project': {
+      'address': 1
+    }
+  }, {
+    '$unwind': {
+      'path': '$address', 
+      'includeArrayIndex': '2'
+    }
+  }, {
+    '$match': {
+      'address.street': {
+        '$exists': true
+      }
+    }
+  }
+]
